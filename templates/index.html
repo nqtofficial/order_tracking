@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Tracking Order</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .header {
+            background-color: #3498db;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .footer {
+            background-color: #3498db;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+
+            bottom: 0;
+            width: 100%;
+
+        }
+
+        .logo {
+            max-width: 100px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <img src="logo.png" alt="Logo" class="logo">
+    </div>
+    <div class="container">
+        <h1 class="text-center">Tracking Order</h1>
+        <form method="post" action="">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="textarea">Mã đơn hàng</label>
+                <textarea class="form-control" placeholder="Có thể nhập nhiều mã đơn hàng, mỗi dòng là 1 mã"
+                    id="textarea" rows="7" name="tracking_number"></textarea>
+            </div>
+            <div class="form-group">
+                <label>Lựa chọn đơn vị vận chuyển</label>
+                <select class="form-control" id="dropdown" name="carrier">
+                    {% for carrier in carriers %}
+                    <option value="{{carrier}}">{{carrier}}</option>
+                    <!-- Add more options here -->
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Kiểm tra</button>
+        </form>
+        <h1 class="text-center">Kết quả kiểm tra</h1>
+        <table class="table mt-4 table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col">Mã vận chuyển</th>
+                    <th scope="col">Trạng thái</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if results %}
+                {% for result in results %}
+                <tr>
+                    <td>{{ result.tracking_number }}</td>
+                    <td>{{ result.status }}</td>
+                </tr>
+                {% endfor %}
+                {% else %}
+                <tr>
+                    <td colspan="2">Không có đơn hàng</td>
+                </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+    <div class="footer text-center">
+        <p>&copy; 2021 My Website. All rights reserved.</p>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>
